@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const patient = require("./routes/PatientDetails");
+const patient = require("./routes/Patient");
 const authorization = require("./middleware/authorization");
 const staff = require("./routes/Staff");
 
@@ -18,6 +18,6 @@ mongoose.connect(
 app.use(express.json());
 
 app.use("/api/staff", staff);
-app.use("/api/patients", authorization, patient);
+app.use("/api/patient", authorization, patient);
 
 app.listen(port, () => console.log(`Server running on ${port}`));

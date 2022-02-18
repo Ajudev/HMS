@@ -12,18 +12,23 @@ module.exports = (req, resp, next) => {
       process.env.TOKEN_SECRET,
       (error, decode) => {
         if (error) resp.status(401).send({ message: "Invalid Token" });
-        Staff.findOne({
-          _id: decode.id,
-        }).exec((error, user) => {
-          if (error) {
+        // const user =
+        Staff.findOne({ _id: decode.id }).exec((err, user) => {
+          if (err) {
             resp.status(500).send({
-              message: error,
+              message: err,
             });
           } else {
             req.user = user;
             next();
           }
         });
+        // if (user) {
+        //   console.log("Auth middleware");
+        //   console.log(user._id);
+        //   req.user = user;
+        //   next();
+        // }
       }
     );
   } else {
