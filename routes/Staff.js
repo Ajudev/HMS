@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const userValidate = require("../validations/UserValidation");
+const staffValidate = require("../validations/StaffValidation");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Staff = require("../models/Staff");
@@ -14,37 +15,39 @@ router.post("/register", async (req, resp) => {
     address: req.body.address,
     dob: req.body.dob,
   };
-  const { error } = userValidate(userData);
-  if (error) return resp.status(400).send(error.details[0].message);
-  await User.findOne({ email: req.body.email }).exec((error, user) => {
-    if (error) {
-      return resp.status(500).send({ status: "Failed", message: error });
-    }
-    if (user) {
-      return resp.status(400).send({
-        status: "Failed",
-        message: "User with email address exists",
-      });
-    }
-  });
+  const userError = userValidate(userData);
+  if (userError.error)
+    return resp.status(400).send({ error: userError.error.details[0].message });
+  const exist_staff = await Staff.findOne({ email: req.body.email });
+  if (exist_staff) {
+    return resp.status(400).send({
+      status: "Failed",
+      message: "User with email address exists",
+    });
+  }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+  const hashedPassword = await bcrypt.hashSync(req.body.password);
+  let staffData = {
+    email: req.body.email,
+    password: hashedPassword,
+    department: req.body.department,
+    education: req.body.education,
+    languages: req.body.languages,
+    staff_type: req.body.staff_type,
+  };
 
+  const staffError = staffValidate(staffData);
+  if (staffError.error)
+    return resp
+      .status(400)
+      .send({ error: staffError.error.details[0].message });
   const user = new User(userData);
 
   try {
-    const saveUser = await user.save();
-    const staff = new Staff({
-      user_id: user._id,
-      email: req.body.email,
-      password: hashedPassword,
-      department: req.body.department,
-      education: req.body.education,
-      languages: req.body.languages,
-      staff_type: req.body.staff_type,
-    });
-    const saveStaff = await staff.save();
+    await user.save();
+    staffData.user_id = user._id;
+    const staff = new Staff(staffData);
+    await staff.save();
     resp.status(200).send({ status: "Success", message: "Staff Created" });
   } catch (err) {
     resp.status(400).send(err);
