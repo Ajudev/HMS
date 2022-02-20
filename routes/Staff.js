@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const Staff = require("../models/Staff");
 const authorization = require("../middleware/authorization");
 
+// endpoint for registering staff
 router.post("/register", async (req, resp) => {
   const userData = {
     name: req.body.name,
@@ -41,6 +42,7 @@ router.post("/register", async (req, resp) => {
     return resp
       .status(400)
       .send({ error: staffError.error.details[0].message });
+
   const user = new User(userData);
 
   try {

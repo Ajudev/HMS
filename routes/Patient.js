@@ -6,6 +6,7 @@ const User = require("../models/User");
 const ObjectId = require("mongodb").ObjectId;
 const patientDataValidate = require("../validations/UpdatePatientValidate");
 
+// endpoint for fetching all patient details
 router.get("/all", async (req, resp) => {
   if (
     req.user.staff_type === "Doctor" ||
@@ -37,6 +38,8 @@ router.get("/all", async (req, resp) => {
   }
 });
 
+
+// endpoint for fetching patient via id
 router.get("/:id", async (req, resp) => {
   if (
     req.user.staff_type === "Doctor" ||
