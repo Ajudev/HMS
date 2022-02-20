@@ -23,12 +23,6 @@ module.exports = (req, resp, next) => {
             next();
           }
         });
-        // if (user) {
-        //   console.log("Auth middleware");
-        //   console.log(user._id);
-        //   req.user = user;
-        //   next();
-        // }
       }
     );
   } else {
