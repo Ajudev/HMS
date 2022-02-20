@@ -10,7 +10,7 @@ const env_config = dotenv.config();
 const port = env_config.parsed.PORT;
 
 mongoose.connect(
-  "mongodb://localhost:27017/hms",
+  "mongodb+srv://devops:devops@cluster0.5pnjk.mongodb.net/DevOpsCW?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => console.log("connected to database")
 );
