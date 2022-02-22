@@ -6,14 +6,11 @@ const User = require("../models/User");
 const ObjectId = require("mongodb").ObjectId;
 const patientDataValidate = require("../validations/UpdatePatientValidate");
 
+let staff_type_permissions = ["Doctor", "Nurse", "Paramedic", "Clerk", "Admin"];
+
 // endpoint for fetching all patient details
 router.get("/all", async (req, resp) => {
-  if (
-    req.user.staff_type === "Doctor" ||
-    req.user.staff_type === "Nurse" ||
-    req.user.staff_type === "Paramedic" ||
-    req.user.staff_type === "Clerk"
-  ) {
+  if (staff_type_permissions.includes(req.user.staff_type)) {
     let patientData = [];
     for await (const doc of Patient.find()) {
       console.log(doc._id);
@@ -38,15 +35,9 @@ router.get("/all", async (req, resp) => {
   }
 });
 
-
 // endpoint for fetching patient via id
 router.get("/:id", async (req, resp) => {
-  if (
-    req.user.staff_type === "Doctor" ||
-    req.user.staff_type === "Nurse" ||
-    req.user.staff_type === "Paramedic" ||
-    req.user.staff_type === "Clerk"
-  ) {
+  if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
     const patientDetails = await Patient.findOne({
       _id: ObjectId(id),
@@ -72,7 +63,8 @@ router.get("/:id", async (req, resp) => {
 });
 
 router.post("/register", async (req, resp) => {
-  if (req.user.staff_type === "Clerk") {
+  staff_type_permissions = ["Clerk", "Admin"];
+  if (staff_type_permissions.includes(req.user.staff_type)) {
     const userData = {
       name: req.body.name,
       contact: req.body.contact,
@@ -122,12 +114,7 @@ router.post("/register", async (req, resp) => {
 });
 
 router.put("/:id", async (req, resp) => {
-  if (
-    req.user.staff_type === "Doctor" ||
-    req.user.staff_type === "Nurse" ||
-    req.user.staff_type === "Paramedic" ||
-    req.user.staff_type === "Clerk"
-  ) {
+  if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
     const updatePatientError = patientDataValidate(req.body);
     if (updatePatientError.error)
@@ -146,12 +133,7 @@ router.put("/:id", async (req, resp) => {
 });
 
 router.delete("/:id", async (req, resp) => {
-  if (
-    req.user.staff_type === "Doctor" ||
-    req.user.staff_type === "Nurse" ||
-    req.user.staff_type === "Paramedic" ||
-    req.user.staff_type === "Clerk"
-  ) {
+  if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
     const patientData = await Patient.findOne({ _id: ObjectId(id) });
     if (!patientData)
