@@ -6,11 +6,11 @@ const patient = require("./routes/Patient");
 const authorization = require("./middleware/authorization");
 const staff = require("./routes/Staff");
 
-const env_config = dotenv.config();
-const port = env_config.parsed.PORT;
+dotenv.config();
+const port = process.env.PORT;
 
 mongoose.connect(
-  "mongodb+srv://devops:devops@cluster0.5pnjk.mongodb.net/DevOpsCW?retryWrites=true&w=majority",
+  process.env.MONGO_HOST,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => console.log("connected to database")
 );
