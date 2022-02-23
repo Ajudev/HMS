@@ -4,7 +4,8 @@ const userValidate = require("../validations/UserValidation");
 const Patient = require("../models/Patient");
 const User = require("../models/User");
 const ObjectId = require("mongodb").ObjectId;
-const patientDataValidate = require("../validations/UpdatePatientValidate");
+
+let staff_type_permissions = ["Doctor", "Nurse", "Paramedic", "Clerk", "Admin"];
 
 let staff_type_permissions = ["Doctor", "Nurse", "Paramedic", "Clerk", "Admin"];
 
@@ -13,15 +14,15 @@ router.get("/all", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     let patientData = [];
     for await (const doc of Patient.find()) {
-      console.log(doc._id);
       const userData = await User.findOne({ _id: doc.user_id });
       const patientDetails = {
+        patient_id: doc._id.toString(),
         name: userData.name,
         contact: userData.contact,
         gender: userData.gender,
         address: userData.address,
         dob: userData.dob,
-        weight: doc.weight,
+        weight: parseFloat(doc.weight),
         height: doc.height,
         blood_type: doc.blood_type,
         emergency_contact: doc.emergency_contact,
@@ -42,16 +43,20 @@ router.get("/:id", async (req, resp) => {
     const patientDetails = await Patient.findOne({
       _id: ObjectId(id),
     });
+    if (!patientDetails)
+      return resp.status(400).send({ message: "Patient not found" });
+
     const user = await User.findOne({
       _id: ObjectId(patientDetails.user_id),
     });
     return resp.status(200).send({
+      patient_id: patientDetails._id.toString(),
       name: user.name,
       contact: user.contact,
       gender: user.gender,
       address: user.address,
       dob: user.dob,
-      weight: patientDetails.weight,
+      weight: parseFloat(patientDetails.weight),
       height: patientDetails.height,
       blood_type: patientDetails.blood_type,
       emergency_contact: patientDetails.emergency_contact,
@@ -77,7 +82,7 @@ router.post("/register", async (req, resp) => {
       return resp
         .status(400)
         .send({ error: userError.error.details[0].message });
-    const existPatient = await Patient.findOne({ contact: req.body.contact });
+    const existPatient = await User.findOne({ contact: req.body.contact });
     if (existPatient) {
       return resp.status(400).send({
         status: "Failed",
@@ -92,7 +97,7 @@ router.post("/register", async (req, resp) => {
       insurance: req.body.insurance,
     };
 
-    const patientError = patientValidate(patientData);
+    const patientError = patientValidate(patientData, "create");
     if (patientError.error)
       return resp
         .status(400)
@@ -116,7 +121,7 @@ router.post("/register", async (req, resp) => {
 router.put("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
-    const updatePatientError = patientDataValidate(req.body);
+    const updatePatientError = patientValidate(req.body, "update");
     if (updatePatientError.error)
       return resp
         .status(400)
