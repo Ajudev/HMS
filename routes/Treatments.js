@@ -7,7 +7,7 @@ const treatmentDataValidate = require("../validations/UpdateTreatmentValidation"
 
 let staff_type_permissions = ["Doctor", "Nurse", "Admin"];
 
-// endpoint for fetching all patient details
+// endpoint for fetching all treatment details in HMS system
 router.get("/all", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     let treatmentData = [];
@@ -32,7 +32,7 @@ router.get("/all", async (req, resp) => {
   }
 });
 
-// endpoint for fetching patient via id
+// endpoint for fetching treatment with given treatment_id from HMS system
 router.get("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
@@ -63,6 +63,7 @@ router.get("/:id", async (req, resp) => {
   }
 });
 
+// endpoint which will create a new treatment for patient
 router.post("/", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     let treatmentData = {
@@ -93,6 +94,7 @@ router.post("/", async (req, resp) => {
   }
 });
 
+//endpoint which will update an existing treatment with given treatment_id
 router.put("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
@@ -112,6 +114,7 @@ router.put("/:id", async (req, resp) => {
   }
 });
 
+//endpoint which will delete a given treatment for a patient from HMS system
 router.delete("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;

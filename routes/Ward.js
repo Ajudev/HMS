@@ -5,7 +5,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 let staff_type_permissions = ["Admin"];
 
-// endpoint for fetching all patient details
+// endpoint for fetching all ward details from HMS system
 router.get("/all", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     let wardData = [];
@@ -24,7 +24,7 @@ router.get("/all", async (req, resp) => {
   }
 });
 
-// endpoint for fetching patient via id
+// endpoint for fetching ward details with given ward_id
 router.get("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
@@ -45,6 +45,7 @@ router.get("/:id", async (req, resp) => {
   }
 });
 
+//endpoint which will create a new ward in HMS system
 router.post("/", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const wardData = {
@@ -70,6 +71,7 @@ router.post("/", async (req, resp) => {
   }
 });
 
+//endpoint which will update an existing ward details in HMS
 router.put("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
@@ -89,6 +91,7 @@ router.put("/:id", async (req, resp) => {
   }
 });
 
+//endpoint which will delete a ward from the HMS system
 router.delete("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
