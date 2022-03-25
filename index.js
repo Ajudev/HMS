@@ -10,7 +10,6 @@ const treatments = require("./routes/Treatments");
 const wardAdmission = require("./routes/WardAdmissions");
 const dailyReports = require("./routes/DailyReports");
 
-
 // Loading to env variables from .env file
 dotenv.config();
 const port = process.env.PORT;
@@ -34,3 +33,5 @@ app.use("/api/DailyReports", authorization, dailyReports);
 
 // running server at port mentioned in env variable
 app.listen(port, () => console.log(`Server running on ${port}`));
+
+module.exports = app;
