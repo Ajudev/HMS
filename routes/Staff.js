@@ -9,7 +9,7 @@ const authorization = require("../middleware/authorization");
 
 let user_type_permissions = ["Admin"];
 
-// endpoint for registering staff
+// endpoint for registering staff to HMS system
 router.post("/register", authorization, async (req, resp) => {
   if (user_type_permissions.includes(req.user.staff_type)) {
     const userData = {
@@ -64,6 +64,7 @@ router.post("/register", authorization, async (req, resp) => {
   }
 });
 
+//endpoint which will allow staff to login to HMS system
 router.post("/login", async (req, resp) => {
   const { email, password } = req.body;
   const user = await Staff.findOne({ email: email });
@@ -99,6 +100,7 @@ router.post("/login", async (req, resp) => {
   });
 });
 
+//endpoint which will allow staff to logout from HMS system
 router.post("/logout", authorization, (req, resp) => {
   resp.status(200).send({ message: "Logout Successful" });
 });

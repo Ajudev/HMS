@@ -7,7 +7,8 @@ const dailyReportDataValidate = require("../validations/UpdateDailyReportValidat
 
 let staff_type_permissions = ["Doctor", "Nurse", "Paramedic", "Admin"];
 
-// endpoint for fetching all patient details
+
+// endpoint for fetching all report details
 router.get("/all", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     let dailyReportData = [];
@@ -27,7 +28,8 @@ router.get("/all", async (req, resp) => {
   }
 });
 
-// endpoint for fetching patient via id
+
+// endpoint for fetching report via id
 router.get("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
@@ -53,6 +55,8 @@ router.get("/:id", async (req, resp) => {
   }
 });
 
+
+// endpoint to post a new report to HMS system
 router.post("/", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     let dailyReportData = {
@@ -83,6 +87,8 @@ router.post("/", async (req, resp) => {
   }
 });
 
+
+// endpoint to update an existing report with given id
 router.put("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
@@ -102,6 +108,8 @@ router.put("/:id", async (req, resp) => {
   }
 });
 
+
+// endpoint to delete a report with given id
 router.delete("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;

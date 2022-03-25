@@ -65,6 +65,7 @@ router.get("/:id", async (req, resp) => {
   }
 });
 
+// endpoint for registering a new patient to HMS system
 router.post("/register", async (req, resp) => {
   staff_type_permissions = ["Clerk", "Admin"];
   if (staff_type_permissions.includes(req.user.staff_type)) {
@@ -116,6 +117,7 @@ router.post("/register", async (req, resp) => {
   }
 });
 
+// endpoint to update an existing patient details with given id
 router.put("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
@@ -135,6 +137,7 @@ router.put("/:id", async (req, resp) => {
   }
 });
 
+// endpoint which will delete a patient with given id from HMS system
 router.delete("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
     const { id } = req.params;
