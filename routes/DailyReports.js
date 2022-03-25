@@ -7,6 +7,7 @@ const dailyReportDataValidate = require("../validations/UpdateDailyReportValidat
 
 let staff_type_permissions = ["Doctor", "Nurse", "Paramedic", "Admin"];
 
+
 // endpoint for fetching all report details
 router.get("/all", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
@@ -26,6 +27,7 @@ router.get("/all", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 // endpoint for fetching report via id
 router.get("/:id", async (req, resp) => {
@@ -52,6 +54,7 @@ router.get("/:id", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 // endpoint to post a new report to HMS system
 router.post("/", async (req, resp) => {
@@ -84,6 +87,7 @@ router.post("/", async (req, resp) => {
   }
 });
 
+
 // endpoint to update an existing report with given id
 router.put("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
@@ -103,6 +107,7 @@ router.put("/:id", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 // endpoint to delete a report with given id
 router.delete("/:id", async (req, resp) => {

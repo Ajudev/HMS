@@ -5,6 +5,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 let staff_type_permissions = ["Admin"];
 
+
 // endpoint for fetching all ward details from HMS system
 router.get("/all", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
@@ -23,6 +24,7 @@ router.get("/all", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 // endpoint for fetching ward details with given ward_id
 router.get("/:id", async (req, resp) => {
@@ -44,6 +46,7 @@ router.get("/:id", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 //endpoint which will create a new ward in HMS system
 router.post("/", async (req, resp) => {
@@ -71,6 +74,7 @@ router.post("/", async (req, resp) => {
   }
 });
 
+
 //endpoint which will update an existing ward details in HMS
 router.put("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
@@ -90,6 +94,7 @@ router.put("/:id", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 //endpoint which will delete a ward from the HMS system
 router.delete("/:id", async (req, resp) => {

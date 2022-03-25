@@ -8,6 +8,7 @@ const Ward = require("../models/Ward");
 
 let staff_type_permissions = ["Doctor", "Nurse", "Paramedic", "Clerk", "Admin"];
 
+
 // endpoint for fetching all ward admission records
 router.get("/", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
@@ -29,6 +30,7 @@ router.get("/", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 // endpoint for fetching ward admission records by given admission id
 router.get("/:id", async (req, resp) => {
@@ -57,6 +59,7 @@ router.get("/:id", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 //endpoint for creating a new ward admission for a patient
 router.post("/", async (req, resp) => {
@@ -95,6 +98,7 @@ router.post("/", async (req, resp) => {
   }
 });
 
+
 //endpoint for updating an existing ward admission details
 router.put("/:id", async (req, resp) => {
   if (staff_type_permissions.includes(req.user.staff_type)) {
@@ -116,6 +120,7 @@ router.put("/:id", async (req, resp) => {
     return resp.status(401).send({ message: "Unauthorized user" });
   }
 });
+
 
 // endpoint for deleting an existing ward admission record from HMS
 router.delete("/:id", async (req, resp) => {

@@ -10,6 +10,7 @@ const treatments = require("./routes/Treatments");
 const wardAdmission = require("./routes/WardAdmissions");
 const dailyReports = require("./routes/DailyReports");
 
+
 // Loading to env variables from .env file
 dotenv.config();
 const port = process.env.PORT;
