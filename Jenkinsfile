@@ -35,7 +35,7 @@ pipeline {
 
         stage('Run the container') {
             steps {
-                sh 'docker run --name hms-app -p 80:4567 hms-app'
+                sh 'docker run --name hms-app -p 80:4567 -d hms-app'
             }
         }
     }
