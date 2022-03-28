@@ -1,5 +1,3 @@
-let mongoose = require("mongoose");
-
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 let server = require("../index");
@@ -20,6 +18,10 @@ describe("/POST login", () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
+        res.body.should.have.property("user");
+        res.body.user.should.be.a("object");
+        res.body.should.have.property("message");
+        res.body.should.have.property("accessToken");
         done();
       });
   });
