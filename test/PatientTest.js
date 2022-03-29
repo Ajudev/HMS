@@ -5,7 +5,7 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe("patient endpoint", () => {
+describe("/patient/all endpoint", () => {
   it("check if /patient/all endpoint works", (done) => {
     let staff = {
       email: "admin@gmail.com",

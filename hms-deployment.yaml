@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: hmscode
-          image: f21ao
+          image: hms-app
           imagePullPolicy: Never # use local image
           ports:
             - containerPort: 4567

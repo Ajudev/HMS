@@ -18,10 +18,15 @@ const port = process.env.PORT;
 mongoose.connect(
   process.env.MONGO_HOST,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log("connected to database")
+  () => true
 );
 
 app.use(express.json());
+
+// Endpoint to check server health
+app.get("/", (req, res) => {
+  res.send("Welcome to HMS system");
+});
 
 // API Route Handler Configuration
 app.use("/api/staff", staff);

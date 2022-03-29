@@ -6,7 +6,7 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 describe("/POST login", () => {
-  it("check if user is valid and return 200 response status", (done) => {
+  it("check if authentication module works", (done) => {
     let staff = {
       email: "admin@gmail.com",
       password: "test123",

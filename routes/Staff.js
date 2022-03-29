@@ -64,10 +64,6 @@ router.post("/register", authorization, async (req, resp) => {
   }
 });
 
-router.get("/health", async (req, resp) => {
-  return resp.status(200).send("Hello world");
-});
-
 //endpoint which will allow staff to login to HMS system
 router.post("/login", async (req, resp) => {
   const { email, password } = req.body;
