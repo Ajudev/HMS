@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: hms-app
-  replicas: 1
+  replicas: 1   # Will be 2 when it goes to production
   template:
     metadata:
       labels:
