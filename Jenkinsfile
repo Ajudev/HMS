@@ -36,7 +36,7 @@ pipeline {
 
         stage('Apply Kubernetes Deployment') {
             steps {
-                sh 'kubectl apply -f kube'
+                sh 'kubectl apply -f kube --insecure-skip-tls-verify'
             }
         }
 
