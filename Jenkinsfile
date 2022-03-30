@@ -24,8 +24,13 @@ pipeline {
 
         stage('Build the Docker image') {
             steps {
-                sh 'eval $(minikube docker-env)'
                 sh 'docker build -t hms-app .'
+            }
+        }
+
+        stage ('Loading Docker image to Kubernetes cluster') {
+            steps {
+                sh 'minikube image load hms-app'
             }
         }
 
