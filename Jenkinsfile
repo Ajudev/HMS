@@ -16,26 +16,22 @@ pipeline {
     }
 
     stages {
-        stage('Stop and remove container if exists') {
-            when {
-                allOf {
-                    expression{env.NODE_CONTAINER_UP == '1'}
-                }
-            }
+        stage('Delete the existing Kubernetes resources') {
             steps {
-                sh 'docker rm -f hms-app'
+                sh 'kubectl delete -f kube'
             }
         }
 
         stage('Build the Docker image') {
             steps {
+                sh 'eval $(minikube docker-env)'
                 sh 'docker build -t hms-app .'
             }
         }
 
-        stage('Run the container') {
+        stage('Creating the Kubernetes Pods') {
             steps {
-                sh 'docker run --name hms-app -p 80:4567 -d hms-app'
+                sh 'kubectl apply -f kube'
             }
         }
     }
