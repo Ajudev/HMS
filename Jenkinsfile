@@ -29,28 +29,18 @@ pipeline {
             }
         }
 
-        stage('Delete Existing Kubernetes Services'){
-            steps{
-                sh 'kubectl delete services -l app.kubernetes.io/name=hms-app'
-            }
-        }
-
-        stage('Delete Existing Kubernetes Deployment'){
-            steps{
-                sh 'kubectl delete deployment -l app.kubernetes.io/name=hms-app'
-            }
-        }
-
         stage('Apply Kubernetes Deployment') {
             steps {
-                sh 'kubectl apply -f hms-deployment.yaml'
+                sh 'kubectl apply -f kube'
             }
         }
 
-        stage('Expose Kubernetes Service') {
+        stage('Run tests') {
             steps {
-                sh 'kubectl expose deployment hms-app --type=NodePort --name=hms-app-svc'
+                sh 'echo Test'
             }
+
         }
+        
     }
 }
