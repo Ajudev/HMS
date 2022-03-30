@@ -16,11 +16,11 @@ pipeline {
     }
 
     stages {
-        stage('Delete the existing Kubernetes resources') {
-            steps {
-                sh 'kubectl delete -f kube'
-            }
-        }
+        // stage('Delete the existing Kubernetes resources') {
+        //     steps {
+        //         sh 'kubectl delete -f kube'
+        //     }
+        // }
 
         stage('Build the Docker image') {
             steps {
