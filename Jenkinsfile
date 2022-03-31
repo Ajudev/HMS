@@ -15,23 +15,13 @@ pipeline {
     }
 
     stages {
-        stage('Stop and remove Docker container if exists') {
-            when {
-                allOf {
-                    expression{env.NODE_CONTAINER_UP == '1'}
-                }
-            }
-            steps {
-                sh 'docker rm -f hms-app'
-            }
-        }
 
-        stage('Build test container and run tests') {
-            steps {
-                sh 'docker build -t hms-app-test -f Dockerfile.test .'
-                sh 'docker run --rm --name hms-app-test -p 4567:4567 hms-app-test'
-            }
-        }
+        // stage('Build test container and run tests') {
+        //     steps {
+        //         sh 'docker build -t hms-app-test -f Dockerfile.test .'
+        //         sh 'docker run --rm --name hms-app-test -p 4567:4567 hms-app-test'
+        //     }
+        // }
 
         stage('Building the production Docker image') {
             steps {
