@@ -12,40 +12,38 @@ pipeline {
 
     environment {
         BUILD_TIMESTAMP = "${BUILD_TIMESTAMP}"
-        NODE_CONTAINER_UP = "${sh(script:'if [ -z $(docker ps -q -f name=hms-app) ]; then echo \"0\"; else echo \"1\"; fi', returnStdout: true).trim()}"
     }
 
     stages {
-        // stage('Delete the existing Kubernetes resources') {
-        //     steps {
-        //         sh 'kubectl delete -f kube'
-        //     }
-        // }
-
-        stage('Build the Docker image') {
+        stage('Stop and remove Docker container if exists') {
+            when {
+                allOf {
+                    expression{env.NODE_CONTAINER_UP == '1'}
+                }
+            }
             steps {
-                sh 'docker build -t hms-app .'
+                sh 'docker rm -f hms-app'
             }
         }
 
-        stage ('Loading Docker image to Kubernetes cluster') {
+        stage('Build test container and run tests') {
+            steps {
+                sh 'docker build -t hms-app-test -f Dockerfile.test .'
+                sh 'docker run --rm --name hms-app-test -p 4567:4567 hms-app-test'
+            }
+        }
+
+        stage('Building the production Docker image') {
+            steps {
+                sh 'docker build -t hms-app -f Dockerfile.production .'
+            }
+        }
+
+        stage ('Kubernetes Cluster Deployment') {
             steps {
                 sh 'minikube image load hms-app'
-            }
-        }
-
-        stage('Apply Kubernetes Deployment') {
-            steps {
                 sh 'kubectl apply -f kube'
             }
-        }
-
-        stage('Run tests') {
-            steps {
-                sh 'npm test'
-            }
-
-        }
-        
+        }       
     }
 }
