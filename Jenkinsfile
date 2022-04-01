@@ -18,20 +18,13 @@ pipeline {
 
         stage('Running tests') {
             steps {
-                sh 'npm install'
-                sh 'npm test'
+                sh 'npm test WardsTest.js'
             }
         }
-        // stage('Build test container and run tests') {
-        //     steps {
-        //         sh 'docker build -t hms-app-test -f Dockerfile.test .'
-        //         sh 'docker run --rm --name hms-app-test -p 4567:4567 hms-app-test'
-        //     }
-        // }
 
         stage('Building the production Docker image') {
             steps {
-                sh 'docker build -t hms-app -f Dockerfile.production .'
+                sh 'docker build -t hms-app -f Dockerfile .'
             }
         }
 
@@ -40,6 +33,7 @@ pipeline {
                 sh 'minikube image load hms-app'
             }
         }
+
         stage ('Kubernetes Cluster Deployment') {
             steps {
                 sh 'kubectl apply -f kube'
