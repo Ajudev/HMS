@@ -16,6 +16,11 @@ pipeline {
 
     stages {
 
+        stage('Running tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
         // stage('Build test container and run tests') {
         //     steps {
         //         sh 'docker build -t hms-app-test -f Dockerfile.test .'
@@ -29,10 +34,15 @@ pipeline {
             }
         }
 
-        stage ('Kubernetes Cluster Deployment') {
+        stage('Load Docker image to K8s cluster') {
             steps {
                 sh 'minikube image load hms-app'
+            }
+        }
+        stage ('Kubernetes Cluster Deployment') {
+            steps {
                 sh 'kubectl apply -f kube'
+                sh 'kubectl get service'
             }
         }       
     }
